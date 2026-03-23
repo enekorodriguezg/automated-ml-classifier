@@ -1,0 +1,10 @@
+{
+  "preprocessing": {
+    "categorical_features": [],
+    "missing_values": "impute",
+    "impute_strategy": "mean",
+    "scaling": "standard",
+    "text_process": "tf-idf",
+    "sampling": "undersampling"
+  }
+}
