@@ -13,40 +13,37 @@ def main():
 
     print(f"Cargando el modelo {archivo_modelo}...")
     try:
-        clf = pickle.load(open(archivo_modelo, 'rb'))
+        clf = pickle.load(open(archivo_modelo, 'rb')) #Se "despierta" al modelo ganador que se haya indicado por terminal
     except FileNotFoundError:
         print(f"Error: No se encuentra el modelo {archivo_modelo}.")
         sys.exit(1)
 
     print(f"Cargando nuevas instancias desde {archivo_nuevos_datos}...")
     try:
-        X_nuevo = pd.read_csv(archivo_nuevos_datos)
+        X_nuevo = pd.read_csv(archivo_nuevos_datos) #Se carga el .csv "ciego" que se nos haya dado para el test.
     except FileNotFoundError:
         print(f"Error: No se encuentra el archivo de datos {archivo_nuevos_datos}.")
         sys.exit(1)
 
     try:
-        # CIRUGÍA VITAL: Secuestrar el ID temporalmente
+        #Se "secuestra" el ID temporalmente porque si el algoritmo lo toma como un dato matemático para predecir, fallará.
         columna_id = None
         if 'ID' in X_nuevo.columns:
             columna_id = X_nuevo['ID'].copy()
             X_nuevo = X_nuevo.drop(columns=['ID'])
             print("[INFO] Columna 'ID' separada temporalmente para la predicción.")
 
-        # Inferencia matemática pura
-        resultado = clf.predict(X_nuevo)
+        resultado = clf.predict(X_nuevo) #Se genera la lista de soluciones
 
-        # Restaurar el ID al principio del dataframe para la entrega
+        #Se restaura el ID al principio del dataframe para la entrega
         if columna_id is not None:
             X_nuevo.insert(0, 'ID', columna_id)
 
-        # CIRUGÍA: Desfragmentar la memoria RAM antes de añadir la última columna
-        X_nuevo = X_nuevo.copy()
+        X_nuevo = X_nuevo.copy() #Se desfragmenta la memoria RAM antes de añadir la última columna
 
-        # Añadir la columna con la solución
-        X_nuevo['Prediccion_Clase'] = resultado
+        X_nuevo['Prediccion_Clase'] = resultado #Se añade la columna con la solución
 
-        # BLINDAJE: Nombramos el CSV de salida dinámicamente según el modelo usado
+        #Se nombra el CSV de salida dinámicamente según el modelo usado
         nombre_base_modelo = archivo_modelo.replace('.sav', '')
         archivo_salida = f"predicciones_{nombre_base_modelo}.csv"
         X_nuevo.to_csv(archivo_salida, index=False)
