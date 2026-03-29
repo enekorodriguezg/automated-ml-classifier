@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
 import pickle
-
+import os
 
 def main():
     if len(sys.argv) < 3:
@@ -44,8 +44,10 @@ def main():
         X_nuevo['Prediccion_Clase'] = resultado #Se añade la columna con la solución
 
         #Se nombra el CSV de salida dinámicamente según el modelo usado
-        nombre_base_modelo = archivo_modelo.replace('.sav', '')
+        nombre_puro = os.path.basename(archivo_modelo)
+        nombre_base_modelo = nombre_puro.replace('.sav', '')
         archivo_salida = f"predicciones_{nombre_base_modelo}.csv"
+
         X_nuevo.to_csv(archivo_salida, index=False)
 
         print(f"\n¡Clasificación completada! Resultados en: {archivo_salida}")

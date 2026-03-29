@@ -81,7 +81,8 @@ def main():
 
     print("3. Construyendo Preprocesador Dinámico (Numérico + Texto)")
     with open(archivo_config, 'r') as f:
-        config = json.load(f)["preprocessing"] #Se abre el archivo configuration.json para el preprocesado
+        config_completo = json.load(f)
+        config = config_completo["preprocessing"] #Se abre el archivo configuration.json para el preprocesado
 
     # Se separan las columnas con valores numéricos de las columnas de valores categóricos
     numeric_features = X_train.select_dtypes(include=['int64', 'float64']).columns
@@ -102,7 +103,7 @@ def main():
     preprocessor = ColumnTransformer(transformers=[ #Se cogen la tubería numérica y la tubería de texto, y se unen en una sola máquina llamada preprocessor
         ('num', numeric_transformer, numeric_features),
         ('cat', categorical_transformer, categorical_features)
-    ], remainder='passthrough')
+    ], remainder='passthrough', sparse_threshold=0)
 
     print("4. Ensamblando Pipelines con Balanceo de Clases")
 
@@ -139,28 +140,12 @@ def main():
     pipe_rf = ImbPipeline(steps=pasos_rf)
 
     print("5. Definiendo Espacios de Búsqueda")
-    #Se definen los parámetros para cada algoritmo
-    parametros_knn = {
-        'classifier__n_neighbors': [3, 5, 7, 9],
-        'classifier__weights': ['uniform', 'distance'],
-        'classifier__p': [1, 2]
-    }
+    hyperparams = config_completo.get("hyperparameters", {})
 
-    parametros_tree = {
-        'classifier__max_depth': [3, 5, 10, None],
-        'classifier__min_samples_split': [2, 5],
-        'classifier__criterion': ['gini', 'entropy']
-    }
-
-    parametros_nb = {
-        'classifier__var_smoothing': [1e-9, 1e-7, 1e-5]
-    }
-
-    parametros_rf = {
-        'classifier__n_estimators': [50, 100, 200],
-        'classifier__max_depth': [None, 10, 20],
-        'classifier__min_samples_split': [2, 5]
-    }
+    parametros_knn = hyperparams.get("knn", {})
+    parametros_tree = hyperparams.get("tree", {})
+    parametros_nb = hyperparams.get("nb", {})
+    parametros_rf = hyperparams.get("rf", {})
 
     #Si hacemos competir a los distintos algoritmos entre ellos, estas son las 4 "notas" que se calculan de cada uno para compararlos.
     metricas = {
