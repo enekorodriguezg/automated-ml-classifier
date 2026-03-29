@@ -54,4 +54,4 @@ El sistema ha sido reestructurado asumiendo que los datos de evaluación pueden 
 5. **Aislamiento del Balanceo (ImbPipeline):** Se ha utilizado la tubería de la librería `imbalanced-learn` para asegurar que el balanceo de clases sintético se aplique **exclusivamente** sobre los pliegues de entrenamiento durante la validación cruzada.
 
 ## ⚖️ Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
