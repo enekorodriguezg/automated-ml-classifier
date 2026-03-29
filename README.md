@@ -1,4 +1,4 @@
-# Práctica 3: Clasificación Automatizada (Sistemas de Ayuda a la Decisión)
+# Clasificación Automatizada (Sistemas de Ayuda a la Decisión)
 
 Este repositorio contiene un sistema completo y defensivo de Machine Learning (Entrenamiento e Inferencia) capaz de procesar datos crudos, realizar limpieza dinámica, balancear clases y ejecutar una búsqueda de hiperparámetros (GridSearchCV) sobre múltiples algoritmos de clasificación.
 
