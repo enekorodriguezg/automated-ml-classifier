@@ -38,7 +38,7 @@ Una vez generados el modelo físico (`.sav`) y el `label_encoder.sav` en la Fase
 
 **Sintaxis básica:**
 
-    python test.py <datos_nuevos_ciegos.csv> -m <modelo_guardado.sav> [-p <columna_objetivo>]
+    python test.py <datos_nuevos_ciegos.csv> <modelo_guardado.sav> [-p <columna_objetivo>]
 
 **Opciones principales:**
 * `-p` / `--pred`: (Opcional) Si tu dataset de prueba incluye la columna objetivo pegada, indícala aquí para que el sistema la ignore de forma segura antes de predecir.
